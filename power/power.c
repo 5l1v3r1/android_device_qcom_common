@@ -203,6 +203,29 @@ static void power_hint(__attribute__((unused)) struct power_module *module, powe
         case POWER_HINT_CPU_BOOST:
         case POWER_HINT_SET_PROFILE:
         case POWER_HINT_LOW_POWER:
+        {
+            char governor[80];
+
+            if (get_scaling_governor(governor, sizeof(governor)) == -1) {
+                ALOGE("Can't obtain scaling governor.");
+                return;
+            }
+            if ((is_sched_energy_aware() == 0) &&
+                (strncmp(governor, SCHED_GOVERNOR, strlen(SCHED_GOVERNOR)) ==
+                 0)) {
+                int resources[] = {0x5528};
+                int duration = 3000;
+                interaction(duration, sizeof(resources)/sizeof(resources[0]), resources);
+            } else {
+                // The portion below as it is bogus and wrong!. This
+                // either needs to be removed once EAS becomes standard or
+                // appropriately modified to ensure that the right parameters
+                // are passed.
+                int resources[] = {0x702, 0x20F, 0x30F};
+                int duration = 3000;
+                interaction(duration, sizeof(resources)/sizeof(resources[0]), resources);
+            }
+        }
         break;
         case POWER_HINT_VIDEO_ENCODE:
             process_video_encode_hint(data);

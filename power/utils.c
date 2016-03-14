@@ -49,6 +49,8 @@
 #define SOC_ID_0 "/sys/devices/soc0/soc_id"
 #define SOC_ID_1 "/sys/devices/system/soc/soc0/id"
 
+#define INTERACTION_BOOST
+
 char scaling_gov_path[4][80] ={
     "sys/devices/system/cpu/cpu0/cpufreq/scaling_governor",
     "sys/devices/system/cpu/cpu1/cpufreq/scaling_governor",
@@ -244,6 +246,22 @@ int get_scaling_governor(char governor[], int size)
             governor[len--] = '\0';
     }
 
+    return 0;
+}
+
+int is_sched_energy_aware(void)
+{
+    char sched_features[500];
+    if (sysfs_read(SCHED_FEATURES_PATH, sched_features,
+                sizeof(sched_features)) < 0) {
+        // Can't obtain the sched_features. Return.
+        return -1;
+    }
+
+    char *pch = strstr(sched_features, ENERGY_AWARE_SCHED_FEATURE);
+    if(!pch) {
+        return -1;
+    }
     return 0;
 }
 
