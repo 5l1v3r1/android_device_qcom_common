@@ -241,8 +241,9 @@ static void power_hint(__attribute__((unused)) struct power_module *module, powe
 	    // Scheduler is EAS.
             if ((is_sched_energy_aware() != -1) &&
                   (strncmp(governor, SCHED_GOVERNOR, strlen(SCHED_GOVERNOR)) == 0)) {
-                // Setting the value of foreground schedtune boost to 40.
-                int resources[] = {0x5528};
+                // Setting the value of foreground schedtune boost to 40 and
+                // scaling_min_freq to 900MHz.
+                int resources[] = {0x42C0C000, 0x32, 0x41800000, 0x33, 0x40800000, 900, 0x40800100, 900};
                 interaction(duration, sizeof(resources)/sizeof(resources[0]), resources);
             } else { // Scheduler is HMP.
                 if (data) {
