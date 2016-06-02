@@ -226,9 +226,10 @@ static void power_hint(__attribute__((unused)) struct power_module *module, powe
             if ((is_sched_energy_aware() != -1) &&
                   (strncmp(governor, SCHED_GOVERNOR, strlen(SCHED_GOVERNOR)) ==
                    0)) {
-                // Setting schedtune boost to 80 and increasing DDR min_freq to
-                // 500MHz.
-                int resources[] = {0x42C0C000, 0x50, 0x41800000, 0x33};
+                // Setting schedtune boost to 50 and increasing DDR min_freq to
+                // 500MHz and increasing scaling_min_freq of CPUs to 900MHz.
+                int resources[] = {0x42C0C000, 0x32, 0x41800000, 0x33,
+                                   0x40800000, 900,  0x40800100, 900};
                 interaction(duration, sizeof(resources) / sizeof(resources[0]),
                             resources);
               }
