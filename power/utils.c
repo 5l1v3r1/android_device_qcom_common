@@ -297,6 +297,11 @@ void interaction(int duration, int num_args, int opt_list[])
     }
 }
 
+void release_request(int lock_handle) {
+    if (qcopt_handle && perf_lock_rel)
+        perf_lock_rel(lock_handle);
+}
+
 void perform_hint_action(int hint_id, int resource_values[], int num_resources)
 {
     if (qcopt_handle) {
