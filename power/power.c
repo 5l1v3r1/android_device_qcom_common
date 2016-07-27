@@ -353,10 +353,10 @@ static void power_hint(__attribute__((unused)) struct power_module *module, powe
             pthread_mutex_unlock(&s_interaction_lock);
 
             // Scheduler is EAS.
-            if (strncmp(governor, SCHED_GOVERNOR, strlen(SCHED_GOVERNOR)) == 0) {
+            if (true || strncmp(governor, SCHED_GOVERNOR, strlen(SCHED_GOVERNOR)) == 0) {
                 // Setting the value of foreground schedtune boost to 40 and
-                // scaling_min_freq to 900MHz.
-                int resources[] = {0x42C0C000, 0x32, 0x41800000, 0x33, 0x40800000, 900, 0x40800100, 900};
+                // scaling_min_freq to 1100MHz.
+                int resources[] = {0x42C0C000, 0x32, 0x41800000, 0x33, 0x40800000, 1100, 0x40800100, 1100};
                 interaction(duration, sizeof(resources)/sizeof(resources[0]), resources);
             } else { // Scheduler is HMP.
                 int resources[] = {0x41800000, 0x33, 0x40800000, 1000, 0x40800100, 1000, 0x40C00000, 0x1};
