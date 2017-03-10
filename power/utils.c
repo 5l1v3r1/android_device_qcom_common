@@ -281,6 +281,21 @@ void interaction(int duration, int num_args, int opt_list[])
     }
 }
 
+int interaction_with_handle(int lock_handle, int duration, int num_args, int opt_list[])
+{
+    if (duration < 0 || num_args < 1 || opt_list[0] == NULL)
+        return 0;
+
+    if (qcopt_handle) {
+        if (perf_lock_acq) {
+            lock_handle = perf_lock_acq(lock_handle, duration, opt_list, num_args);
+            if (lock_handle == -1)
+                ALOGE("Failed to acquire lock.");
+        }
+    }
+    return lock_handle;
+}
+
 void release_request(int lock_handle) {
     if (qcopt_handle && perf_lock_rel)
         perf_lock_rel(lock_handle);

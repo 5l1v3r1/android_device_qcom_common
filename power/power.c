@@ -240,13 +240,6 @@ void interaction(int duration, int num_args, int opt_list[]);
 int interaction_with_handle(int lock_handle, int duration, int num_args, int opt_list[]);
 void release_request(int lock_handle);
 
-static long long calc_timespan_us(struct timespec start, struct timespec end) {
-    long long diff_in_us = 0;
-    diff_in_us += (end.tv_sec - start.tv_sec) * USINSEC;
-    diff_in_us += (end.tv_nsec - start.tv_nsec) / NSINUS;
-    return diff_in_us;
-}
-
 static void power_hint(__attribute__((unused)) struct power_module *module, power_hint_t hint,
         void *data)
 {
@@ -758,7 +751,7 @@ struct power_module HAL_MODULE_INFO_SYM = {
     .powerHint = power_hint,
     .setInteractive = set_interactive,
     .setFeature = set_feature,
-    .getFeature = get_feature
+    .getFeature = get_feature,
     .get_number_of_platform_modes = get_number_of_platform_modes,
     .get_platform_low_power_stats = get_platform_low_power_stats,
     .get_voter_list = get_voter_list
